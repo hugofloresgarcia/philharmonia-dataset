@@ -60,7 +60,7 @@ def download_dataset(save_path = "./data/philharmonia"):
         None
     """
     if os.path.exists(os.path.join(save_path, 'all-samples')):
-        raise Warning(f"looks like there is already a dataset in {save_path}. will not download. ")
+        print(f"Philharmonia: looks like there is already a dataset in {save_path}. will not download. delete {save_path} and try again if you want to download")
         return 
     url = "https://philharmonia-assets.s3-eu-west-1.amazonaws.com/uploads/2020/02/12112005/all-samples.zip"
     

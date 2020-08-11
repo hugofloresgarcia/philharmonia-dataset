@@ -119,9 +119,10 @@ class PhilharmoniaSet(Dataset):
         if self.load_audio:
                 # import our audio using torchaudio
                 audio, sr = torchaudio.load(path_to_audio)
+                data['audio'] = audio
+                data['sr'] = sr
                 
-        data['audio'] = audio
-        data['sr'] = sr
+        
 
         return data
 

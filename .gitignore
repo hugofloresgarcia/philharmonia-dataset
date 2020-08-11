@@ -1,0 +1,15 @@
+**/venv/**
+.DS_Store
+*.mp3
+**/philharmonia
+**/__pycache__
+*.zip
+*.pyc
+**/.ipynb_checkpoints
+*.DS_Store
+*.jpg
+**/.idea
+*.html
+/openl3/
+**/animations/**
+*.json

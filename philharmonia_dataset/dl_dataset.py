@@ -44,7 +44,10 @@ def generate_dataframe(root_dir):
                 metadata = {
                     'instrument': fsplit[0],
                     'pitch': fsplit[1], 
-                    'path_to_audio': os.path.join(root, f)
+                    'path_to_audio': os.path.join(root, f), 
+                    'note_length': fsplit[2], 
+                    'dynamic': fsplit[3], 
+                    'articulation': fsplit[4]
                 }
                 data.append(metadata)
     return pd.DataFrame(data)
@@ -59,8 +62,8 @@ def download_dataset(save_path = "./data/philharmonia"):
     returns:
         None
     """
-    if os.path.exists(os.path.join(save_path, 'all-samples')):
-        print(f"Philharmonia: looks like there is already a dataset in {save_path}. will not download. delete {save_path} and try again if you want to download")
+    if os.path.exists(os.path.join(save_path, 'all-samples', 'metadata.csv')):
+        logging.info(f"Philharmonia: looks like there is already a dataset in {save_path}. will not download. delete {save_path} and try again if you want to download")
         return 
     url = "https://philharmonia-assets.s3-eu-west-1.amazonaws.com/uploads/2020/02/12112005/all-samples.zip"
     
@@ -74,8 +77,8 @@ def download_dataset(save_path = "./data/philharmonia"):
     
     logging.info('generating dataframe...')
     df_path = os.path.join(save_path, 'all-samples', 'metadata.csv')
-    df = generate_dataframe(os.path.join(save_path, 'all-samples'))
-    df.to_csv(df_path)
+    metadata = generate_dataframe(os.path.join(save_path, 'all-samples'))
+    metadata.to_csv(df_path)
     logging.info(f'dataframe saved to {df_path}')
     logging.info('all done!')
 

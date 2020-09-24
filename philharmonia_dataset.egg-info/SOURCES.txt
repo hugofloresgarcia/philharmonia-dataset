@@ -1,0 +1,11 @@
+README.md
+setup.py
+philharmonia_dataset/__init__.py
+philharmonia_dataset/dataset.py
+philharmonia_dataset/dl_dataset.py
+philharmonia_dataset/list_classes.py
+philharmonia_dataset.egg-info/PKG-INFO
+philharmonia_dataset.egg-info/SOURCES.txt
+philharmonia_dataset.egg-info/dependency_links.txt
+philharmonia_dataset.egg-info/requires.txt
+philharmonia_dataset.egg-info/top_level.txt

@@ -1,4 +1,4 @@
-from labeler import datasets
+import .dataset 
 
 if __name__ == "__main__":
     path_to_csv =  './data/philharmonia/all-samples/metadata.csv'

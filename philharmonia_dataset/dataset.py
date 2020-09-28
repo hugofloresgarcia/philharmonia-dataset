@@ -91,8 +91,7 @@ class PhilharmoniaSet(Dataset):
 
         # remove all the classes not specified, unless it was left as None
         if classes == 'no_percussion':
-            self.classes = list("saxophone,flute,guitar,contrabassoon,bass-clarinet,trombone,cello,oboe,bassoon, \
-                banjo,mandolin,tuba,viola,french-horn,english-horn,violin,double-bass,trumpet,clarinet".split(','))
+            self.classes = list("saxophone,flute,guitar,contrabassoon,bass-clarinet,trombone,cello,oboe,bassoon,banjo,mandolin,tuba,viola,french-horn,english-horn,violin,double-bass,trumpet,clarinet".split(','))
             self.metadata = [e for e in self.metadata if e['instrument'] in self.classes]
         elif classes is not None: # if it's literally anything else lol (filter out unneeded metadata)
             self.metadata = [e for e in self.metadata if e['instrument'] in classes]

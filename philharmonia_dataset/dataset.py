@@ -9,6 +9,49 @@ import numpy as np
 from .dl_dataset import download_dataset
 import logging
 
+
+def train_test_split(dataset, batch_size=1,
+                     val_split=0.2, shuffle=True,
+                     random_seed=42, collate_fn=None, num_workers=1):
+    """
+    i stole this from
+    https://stackoverflow.com/questions/50544730/how-do-i-split-a-custom-dataset-into-training-and-test-datasets
+    create a train DataLoader and test DataLoader for a dataset
+    params:
+        dataset (torch.utils.data.Dataset): dataset to create splits for
+        batch_size (int): batch size
+        val_split (float): percentage w/ range (0, 1) to use for validation
+        shuffle (bool): whether to shuffle the data or not
+        random_seed (int): random seed for shuffle. 
+    returns: 
+        tuple of torch DataLoaders with format: 
+        (train_loader, val_loader)
+    """
+    # Creating data indices for training and validation splits:
+    dataset_size = len(dataset)
+    indices = list(range(dataset_size))
+    split = int(np.floor(val_split * dataset_size))
+    if shuffle:
+        torch.manual_seed(random_seed)
+        np.random.seed(random_seed)
+        np.random.shuffle(indices)
+    train_indices, val_indices = indices[split:], indices[:split]
+
+    # Creating PT data samplers and loaders:
+    train_sampler = SubsetRandomSampler(train_indices)
+    valid_sampler = SubsetRandomSampler(val_indices)
+
+    train_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,
+                                               sampler=train_sampler, collate_fn=collate_fn, 
+                                               num_workers=num_workers)
+    val_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,
+                                             sampler=valid_sampler, collate_fn=collate_fn, 
+                                             num_workers=num_workers)
+
+    return train_loader, val_loader
+
+
+
 def debatch(data):
     """
      convert batch size 1 to None

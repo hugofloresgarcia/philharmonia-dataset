@@ -83,6 +83,7 @@ class PhilharmoniaSet(Dataset):
             download_dataset(dataset_path)
 
         path_to_csv = os.path.join(dataset_path ,'all-samples', 'metadata.csv')
+        self.dataset_path = dataset_path
 
         assert os.path.exists(path_to_csv), f"couldn't find metadata:{path_to_csv}"
         # generate a list of dicts from our dataframe
@@ -125,6 +126,8 @@ class PhilharmoniaSet(Dataset):
 
     def retrieve_entry(self, entry):
         path_to_audio = entry['path_to_audio']
+        path_to_audio = path_to_audio.replace('./data/philharmonia', self.dataset_path)
+        
         filename = path_to_audio.split('/')[-1]
 
         assert os.path.exists(path_to_audio), f"couldn't find {path_to_audio}"

@@ -126,7 +126,7 @@ class PhilharmoniaSet(Dataset):
 
     def retrieve_entry(self, entry):
         path_to_audio = entry['path_to_audio']
-        path_to_audio = path_to_audio.replace('./data/philharmonia', self.dataset_path)
+        # path_to_audio = path_to_audio.replace('./data/philharmonia', self.dataset_path)
         
         filename = path_to_audio.split('/')[-1]
 

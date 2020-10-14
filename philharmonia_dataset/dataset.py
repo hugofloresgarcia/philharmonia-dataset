@@ -100,7 +100,7 @@ class PhilharmoniaSet(Dataset):
 
         self.classes.sort()
 
-        self.retrieve_entry_fn = self._retrieve_entry
+        self.load_chunked = False
         
     def check_metadata(self):
         missing_files = []
@@ -141,7 +141,7 @@ class PhilharmoniaSet(Dataset):
             'labels': np.argmax(self.get_onehot(instrument)), 
         }
 
-        # add all the keys from the entry as well
+        # add all the keys from the entryas well
         data.update(entry)
 
         if self.load_audio:

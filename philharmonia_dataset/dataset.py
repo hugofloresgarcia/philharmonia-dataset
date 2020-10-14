@@ -51,7 +51,6 @@ def train_test_split(dataset, batch_size=1,
     return train_loader, val_loader
 
 
-
 def debatch(data):
     """
      convert batch size 1 to None
@@ -100,6 +99,8 @@ class PhilharmoniaSet(Dataset):
             self.classes = list(set([e['instrument'] for e in self.metadata]))
 
         self.classes.sort()
+
+        self.retrieve_entry_fn = self._retrieve_entry
         
     def check_metadata(self):
         missing_files = []
@@ -123,7 +124,7 @@ class PhilharmoniaSet(Dataset):
 
         return tuple(classes)
 
-    def retrieve_entry(self, entry):
+    def _retrieve_entry(self, entry):
         path_to_audio = entry['path_to_audio']
         # path_to_audio = path_to_audio.replace('./data/philharmonia', self.dataset_path)
         
@@ -146,14 +147,22 @@ class PhilharmoniaSet(Dataset):
         if self.load_audio:
             # import our audio using torchaudio
             audio, sr = torchaudio.load(path_to_audio)
+            if self.load_chunked:
+                # calculate end time
+                start_time = data['start_time']
+                end_time = (data['start_time'] + data['audio_len']) * sr
+                audio = audio[:, start_time:end_time]
             data['audio'] = audio
             data['sr'] = sr
                 
         return data
 
+    def set_retrieve_entry_fn(retrieve_entry_fn):
+        self.retrieve_entry_fn = retrieve_entry_fn
+
     def __getitem__(self, index):
         def retrieve(index):
-            return self.retrieve_entry(self.metadata[index])
+            return self.retrieve_entry_fn(self.metadata[index])
 
         if isinstance(index, int):
             return retrieve(index)

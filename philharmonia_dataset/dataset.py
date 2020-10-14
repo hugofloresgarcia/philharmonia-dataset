@@ -157,12 +157,10 @@ class PhilharmoniaSet(Dataset):
                 
         return data
 
-    def set_retrieve_entry_fn(retrieve_entry_fn):
-        self.retrieve_entry_fn = retrieve_entry_fn
 
     def __getitem__(self, index):
         def retrieve(index):
-            return self.retrieve_entry_fn(self.metadata[index])
+            return self._retrieve_entry(self.metadata[index])
 
         if isinstance(index, int):
             return retrieve(index)

@@ -138,7 +138,7 @@ class PhilharmoniaSet(Dataset):
         data = {
             'filename': filename,
             'one_hot': self.get_onehot(instrument),
-            'numeric_label': np.argmax(self.get_onehot(instrument)), 
+            'labels': np.argmax(self.get_onehot(instrument)), 
         }
 
         # add all the keys from the entry as well

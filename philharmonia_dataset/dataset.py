@@ -152,6 +152,7 @@ class PhilharmoniaSet(Dataset):
                 start_time = data['start_time']
                 end_time = (data['start_time'] + data['audio_len']) * sr
                 audio = audio[:, start_time:end_time]
+                print(audio.shape)
             data['audio'] = audio
             data['sr'] = sr
                 

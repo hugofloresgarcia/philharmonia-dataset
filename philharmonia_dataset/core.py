@@ -76,7 +76,7 @@ class PhilharmoniaDataset(Dataset):
         self.classes.sort()
 
         random.seed(seed)
-        self.records = random.shuffle(self.records)
+        random.shuffle(self.records)
 
     def _retrieve_entry(self, entry):
         path_to_audio = self.root / 'all-samples' / entry['parent'] / entry['filename']

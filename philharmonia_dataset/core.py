@@ -35,7 +35,7 @@ class PhilharmoniaDataset(Dataset):
         self.root = Path(root)
 
         # generate a list of dicts from our dataframe
-        self.records = pd.read_csv(self.root / 'all-samples' / 'metadata.csv', header=1).to_dict('records')
+        self.records = pd.read_csv(self.root / 'all-samples' / 'metadata.csv').to_dict('records')
 
         # remove all the classes not specified, unless it was left as None
         if classes == 'no-percussion':

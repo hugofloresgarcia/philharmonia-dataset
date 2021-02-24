@@ -19,7 +19,7 @@ def debatch(data):
             data[key] = data[key][0]
     return data
 
-class PhilharmoniaSet(Dataset):
+class PhilharmoniaDataset(Dataset):
     def __init__(self, 
                  root: str = './data/philharmonia', 
                  classes: tuple = None,

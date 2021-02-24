@@ -8,6 +8,7 @@ import pandas as pd
 import logging
 from pathlib import Path
 import audio_utils as au
+from tqdm import tqdm
 import warnings
 warnings.simplefilter("ignore")
 
@@ -38,8 +39,10 @@ def generate_dataframe(root_dir):
             generate_dataframe(os.path.join(root, d))
         # we just want mp3s
 
-        for f in files:
+        pbar = tqdm(files)
+        for f in pbar:
             ## two problematic files that have failed to load in the past
+            pbar.set_description(f)
             if f == 'viola_D6_05_piano_arco-normal.mp3' or \
                 f == 'saxophone_Fs3_15_fortissimo_normal.mp3' or\
                    f == "guitar_Gs4_very-long_forte_normal.mp3" or\

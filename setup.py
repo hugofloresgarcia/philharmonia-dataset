@@ -23,6 +23,7 @@ install_requires = [
     'torch', 
     'numpy',
     'audio_utils @ git+https://github.com/hugofloresgarcia/audio-utils'
+    'tqdm'
 ]
 
 if __name__ == '__main__':

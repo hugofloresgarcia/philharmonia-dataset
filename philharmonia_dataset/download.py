@@ -9,6 +9,7 @@ import logging
 from pathlib import Path
 import audio_utils as au
 import warnings
+warnings.simplefilter("ignore")
 
 def extract_nested_zip(zippedFile, toFolder):
     """ Extract a zip file including any nested zip files
@@ -39,15 +40,17 @@ def generate_dataframe(root_dir):
 
         for f in files:
             ## two problematic files that have failed to load in the past
-            if f == 'viola_D6_05_piano_arco-normal.mp3' or f == 'saxophone_Fs3_15_fortissimo_normal.mp3' or f == "guitar_Gs4_very-long_forte_normal.mp3":
+            if f == 'viola_D6_05_piano_arco-normal.mp3' or \
+                f == 'saxophone_Fs3_15_fortissimo_normal.mp3' or\
+                   f == "guitar_Gs4_very-long_forte_normal.mp3" or\
+                       f == "bass-clarinet_Gs3_025_piano_normal.mp3":
                 os.remove(os.path.join(root, f))
                 continue
             if f[-4:]  == '.mp3':
                 fsplit = f.split('_')
                 mp3_path = Path(root) / f
                 wav_path = str(mp3_path).replace('.mp3', '.wav')
-                with warnings.catch_warnings():
-                    audio = au.io.load_audio_file(str(mp3_path), 48000)
+                audio = au.io.load_audio_file(str(mp3_path), 48000)
                 au.io.write_audio_file(audio, wav_path, 48000, 'wav')
                 os.remove(mp3_path)
                 metadata = {

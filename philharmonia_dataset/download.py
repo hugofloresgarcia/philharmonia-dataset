@@ -38,7 +38,7 @@ def generate_dataframe(root_dir):
 
         for f in files:
             ## two problematic files that have failed to load in the past
-            if f == 'viola_D6_05_piano_arco-normal.mp3' or f == 'saxophone_Fs3_15_fortissimo_normal.mp3':
+            if f == 'viola_D6_05_piano_arco-normal.mp3' or f == 'saxophone_Fs3_15_fortissimo_normal.mp3' or f == "guitar_Gs4_very-long_forte_normal.mp3":
                 os.remove(os.path.join(root, f))
                 continue
             if f[-4:]  == '.mp3':

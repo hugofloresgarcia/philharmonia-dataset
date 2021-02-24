@@ -14,3 +14,4 @@
 **/animations/**
 *.json
 /data/
+*.egg-info

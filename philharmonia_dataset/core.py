@@ -25,6 +25,23 @@ class PhilharmoniaDataset(Dataset):
                  classes: tuple = None,
                  download: bool = True, 
                  sample_rate: int = 48000):
+        r"""creates a PyTorch Dataset object for the Philharmonia Orchestra samples.
+        https://philharmonia.co.uk/resources/sound-samples/
+
+        indexing returns a dictionary with format:
+        {
+            audio (np.ndarray): audio array with shape (channels, samples)
+            onehot (str): one hot encoding of label
+            label (int): index of label in the one hot
+            instrument (str): instrument name
+        }
+
+        Args:
+            root (str, optional): path to dataset root. Defaults to './data/philharmonia'.
+            classes (tuple, optional) which classes to include. not working for now. 
+            download (bool, optional): whether to download the dataset. Defaults to True.
+            sample_rate (int, optional): sample rate for loading audio. Defaults to 48000.
+        """
         super().__init__()
         self.sample_rate = sample_rate
 
@@ -38,6 +55,8 @@ class PhilharmoniaDataset(Dataset):
         self.records = pd.read_csv(self.root / 'all-samples' / 'metadata.csv').to_dict('records')
 
         # remove all the classes not specified, unless it was left as None
+        #TODO: fix me
+        classes = 'no-percussion'
         if classes == 'no-percussion':
             self.classes = list("saxophone,flute,guitar,contrabassoon,bass-clarinet,"\
                                 "trombone,cello,oboe,bassoon,banjo,mandolin,tuba,viola,"\

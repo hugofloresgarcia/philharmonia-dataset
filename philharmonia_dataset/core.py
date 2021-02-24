@@ -6,6 +6,7 @@ import pandas as pd
 from torch.utils.data import Dataset
 import numpy as np
 import audio_utils as au
+import random
 
 from .download import download_dataset
 
@@ -24,7 +25,8 @@ class PhilharmoniaDataset(Dataset):
                  root: str = './data/philharmonia', 
                  classes: tuple = None,
                  download: bool = True, 
-                 sample_rate: int = 48000):
+                 sample_rate: int = 48000, 
+                 seed: int = 0):
         r"""creates a PyTorch Dataset object for the Philharmonia Orchestra samples.
         https://philharmonia.co.uk/resources/sound-samples/
 
@@ -69,6 +71,9 @@ class PhilharmoniaDataset(Dataset):
             self.classes = list(set([e['instrument'] for e in self.records]))
 
         self.classes.sort()
+
+        random.seed(seed)
+        self.records = random.shuffle(self.records)
 
     def _retrieve_entry(self, entry):
         path_to_audio = self.root / 'all-samples' / entry['parent'] / entry['filename']

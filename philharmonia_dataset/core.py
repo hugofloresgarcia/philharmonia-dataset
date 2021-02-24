@@ -93,14 +93,7 @@ class PhilharmoniaDataset(Dataset):
         data.update(entry)
 
         # import our audio using sox
-        # audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
-        try:
-            tfm = sox.Transformer()
-            tfm.set_output_format(rate=self.sample_rate)
-            audio = tfm.build_array(input_filepath=str(path_to_audio))
-            audio = audio.T
-            if audio.ndim == 1:
-                audio = np.expand_dims(audio, axis=0)
+        audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
         except:
             return self[random.randint(0, len(self))]
         data['audio'] = audio

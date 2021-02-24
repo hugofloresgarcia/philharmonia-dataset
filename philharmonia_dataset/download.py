@@ -9,6 +9,7 @@ import logging
 from pathlib import Path
 import audio_utils as au
 from tqdm import tqdm
+import sox
 import warnings
 warnings.simplefilter("ignore")
 
@@ -53,8 +54,11 @@ def generate_dataframe(root_dir):
                 fsplit = f.split('_')
                 mp3_path = Path(root) / f
                 wav_path = str(mp3_path).replace('.mp3', '.wav')
-                audio = au.io.load_audio_file(str(mp3_path), 48000)
-                au.io.write_audio_file(audio, wav_path, 48000, 'wav')
+                tfm = sox.Transformer()
+                tfm.set_output_format(file_type='wav', rate=48000)
+                tfm.build_file(input_filepath=mp3_path, output_filepath=wav_path)
+                # audio = au.io.load_audio_file(str(mp3_path), 48000)
+                # au.io.write_audio_file(audio, wav_path, 48000, 'wav')
                 os.remove(mp3_path)
                 metadata = {
                     'instrument': fsplit[0],

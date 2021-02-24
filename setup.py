@@ -23,7 +23,8 @@ install_requires = [
     'torch', 
     'numpy',
     'audio_utils @ git+https://github.com/hugofloresgarcia/audio-utils'
-    'tqdm'
+    'tqdm', 
+    'sox @ git+https://github.com/rabitt/pysox.git'
 ]
 
 if __name__ == '__main__':

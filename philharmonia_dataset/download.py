@@ -6,6 +6,8 @@ import urllib.request
 import zipfile, re, os
 import pandas as pd
 import logging
+from pathlib import Path
+import audio_utils as au
 
 def extract_nested_zip(zippedFile, toFolder):
     """ Extract a zip file including any nested zip files
@@ -41,11 +43,15 @@ def generate_dataframe(root_dir):
                 continue
             if f[-4:]  == '.mp3':
                 fsplit = f.split('_')
+                mp3_path = Path(root) / f
+                wav_path = mp3_path.replace('.mp3', '.wav')
+                audio = au.io.load_audio_file(mp3_path, 48000)
+                au.io.write_audio_file(audio, wav_path, 48000, 'wav')
                 metadata = {
                     'instrument': fsplit[0],
                     'pitch': fsplit[1], 
                     'parent': root.split('/')[-1],
-                    'filename': f,
+                    'filename': f.replace('.mp3', '.wav'),
                     'note_length': fsplit[2], 
                     'dynamic': fsplit[3], 
                     'articulation': fsplit[4]

@@ -25,13 +25,6 @@ class PhilharmoniaDataset(Dataset):
                  classes: tuple = None,
                  download: bool = True, 
                  sample_rate: int = 48000):
-        """
-        create a PhilharmoniaSet object.
-        params:
-            path_to_csv (str): path to metadata.csv created upon downloading the dataset
-            classes (tuple[str]): tuple with classnames to include in the dataset
-            load_audio (bool): whether to load audio or pass the path to audio instead when retrieving an item
-        """
         super().__init__()
         self.sample_rate = sample_rate
 
@@ -72,10 +65,9 @@ class PhilharmoniaDataset(Dataset):
         # add all the keys from the entryas well
         data.update(entry)
 
-        if self.load_audio:
-            # import our audio using torchaudio
-            audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
-            data['audio'] = audio
+        # import our audio using torchaudio
+        audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
+        data['audio'] = audio
 
         return data
 

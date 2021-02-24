@@ -97,7 +97,7 @@ class PhilharmoniaDataset(Dataset):
         try:
             tfm = sox.Transformer()
             tfm.set_output_format(rate=self.sample_rate)
-            audio = tfm.build_array(input_filepath=path_to_audio)
+            audio = tfm.build_array(input_filepath=str(path_to_audio))
             audio = audio.T
         except:
             return self[random.randint(0, len(self))]

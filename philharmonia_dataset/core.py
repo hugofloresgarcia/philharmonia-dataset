@@ -99,6 +99,8 @@ class PhilharmoniaDataset(Dataset):
             tfm.set_output_format(rate=self.sample_rate)
             audio = tfm.build_array(input_filepath=str(path_to_audio))
             audio = audio.T
+            if audio.ndim == 1:
+                audio = np.expand_dims(audio, axis=0)
         except:
             return self[random.randint(0, len(self))]
         data['audio'] = audio

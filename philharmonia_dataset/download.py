@@ -47,6 +47,7 @@ def generate_dataframe(root_dir):
                 wav_path = mp3_path.replace('.mp3', '.wav')
                 audio = au.io.load_audio_file(mp3_path, 48000)
                 au.io.write_audio_file(audio, wav_path, 48000, 'wav')
+                os.remove(mp3_path)
                 metadata = {
                     'instrument': fsplit[0],
                     'pitch': fsplit[1], 

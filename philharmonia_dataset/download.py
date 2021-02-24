@@ -44,7 +44,8 @@ def generate_dataframe(root_dir):
                 metadata = {
                     'instrument': fsplit[0],
                     'pitch': fsplit[1], 
-                    'path_to_audio': os.path.join(root, f), 
+                    'parent': root.split('/')[-1],
+                    'filename': f,
                     'note_length': fsplit[2], 
                     'dynamic': fsplit[3], 
                     'articulation': fsplit[4]

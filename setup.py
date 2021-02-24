@@ -21,8 +21,8 @@ setup_args = dict(
 install_requires = [
     'pandas', 
     'torch', 
-    'torchaudio', 
-    'numpy'
+    'numpy',
+    'audio_utils @ git+https://github.com/hugofloresgarcia/audio-utils'
 ]
 
 if __name__ == '__main__':

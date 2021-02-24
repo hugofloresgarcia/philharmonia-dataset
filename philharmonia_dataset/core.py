@@ -136,3 +136,15 @@ class PhilharmoniaDataset(Dataset):
         entry = subset[idx]
         return self.retrieve_entry(entry)
 
+
+SAMPLE_RATE = 48000 # required for pretrained openl3
+
+# create a dataset object
+dataset = PhilharmoniaDataset(
+			root='./data/philharmonia', 
+			classes='no-percussion', # dont load a bunch of percussion instruments 
+			download=True, 
+      sample_rate=SAMPLE_RATE,
+)
+
+print(dataset[0])

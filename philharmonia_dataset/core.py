@@ -96,7 +96,7 @@ class PhilharmoniaDataset(Dataset):
         # audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
         tfm = sox.Transformer()
         tfm.set_output_format(rate=self.sample_rate)
-        audio = tfm.build_array(input_filepath=path_to_audio, return_output=True)
+        audio = tfm.build_array(input_filepath=path_to_audio)
         audio = audio.T
         data['audio'] = audio
 
@@ -135,16 +135,3 @@ class PhilharmoniaDataset(Dataset):
 
         entry = subset[idx]
         return self.retrieve_entry(entry)
-
-
-SAMPLE_RATE = 48000 # required for pretrained openl3
-
-# create a dataset object
-dataset = PhilharmoniaDataset(
-			root='./data/philharmonia', 
-			classes='no-percussion', # dont load a bunch of percussion instruments 
-			download=True, 
-      sample_rate=SAMPLE_RATE,
-)
-
-print(dataset[0])

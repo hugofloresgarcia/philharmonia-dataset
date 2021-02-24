@@ -8,6 +8,7 @@ import pandas as pd
 import logging
 from pathlib import Path
 import audio_utils as au
+import warnings
 
 def extract_nested_zip(zippedFile, toFolder):
     """ Extract a zip file including any nested zip files
@@ -45,7 +46,8 @@ def generate_dataframe(root_dir):
                 fsplit = f.split('_')
                 mp3_path = Path(root) / f
                 wav_path = str(mp3_path).replace('.mp3', '.wav')
-                audio = au.io.load_audio_file(str(mp3_path), 48000)
+                with warnings.catch_warnings():
+                    audio = au.io.load_audio_file(str(mp3_path), 48000)
                 au.io.write_audio_file(audio, wav_path, 48000, 'wav')
                 os.remove(mp3_path)
                 metadata = {

@@ -92,7 +92,7 @@ class PhilharmoniaDataset(Dataset):
         # add all the keys from the entryas well
         data.update(entry)
 
-        # import our audio using torchaudio
+        # import our audio using sox
         # audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
         tfm = sox.Transformer()
         tfm.set_output_format(rate=self.sample_rate)

@@ -94,8 +94,6 @@ class PhilharmoniaDataset(Dataset):
 
         # import our audio using sox
         audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
-        except:
-            return self[random.randint(0, len(self))]
         data['audio'] = audio
 
         return data

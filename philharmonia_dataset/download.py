@@ -53,10 +53,10 @@ def generate_dataframe(root_dir):
             if f[-4:]  == '.mp3':
                 fsplit = f.split('_')
                 mp3_path = Path(root) / f
-                wav_path = str(mp3_path).replace('.mp3', '.wav')
-                tfm = sox.Transformer()
-                tfm.set_output_format(file_type='wav', rate=48000)
-                tfm.build_file(input_filepath=mp3_path, output_filepath=wav_path)
+                # wav_path = str(mp3_path).replace('.mp3', '.wav')
+                # tfm = sox.Transformer()
+                # tfm.set_output_format(file_type='wav', rate=48000)
+                # tfm.build_file(input_filepath=mp3_path, output_filepath=wav_path)
                 # audio = au.io.load_audio_file(str(mp3_path), 48000)
                 # au.io.write_audio_file(audio, wav_path, 48000, 'wav')
                 os.remove(mp3_path)
@@ -64,7 +64,7 @@ def generate_dataframe(root_dir):
                     'instrument': fsplit[0],
                     'pitch': fsplit[1], 
                     'parent': root.split('/')[-1],
-                    'filename': f.replace('.mp3', '.wav'),
+                    'filename': f, #f.replace('.mp3', '.wav'),
                     'note_length': fsplit[2], 
                     'dynamic': fsplit[3], 
                     'articulation': fsplit[4]

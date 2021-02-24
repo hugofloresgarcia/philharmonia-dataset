@@ -7,6 +7,9 @@ from torch.utils.data import Dataset
 import numpy as np
 import audio_utils as au
 import random
+import sox
+import warnings
+warnings.simplefilter("ignore")
 
 from .download import download_dataset
 
@@ -90,7 +93,11 @@ class PhilharmoniaDataset(Dataset):
         data.update(entry)
 
         # import our audio using torchaudio
-        audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
+        # audio = au.io.load_audio_file(path_to_audio, self.sample_rate)
+        tfm = sox.Transformer()
+        tfm.set_output_format(rate=self.sample_rate)
+        audio = tfm.build_array(input_filepath=path_to_audio, return_output=True)
+        audio = audio.T
         data['audio'] = audio
 
         return data

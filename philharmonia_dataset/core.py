@@ -43,7 +43,7 @@ class PhilharmoniaDataset(Dataset):
 
         Args:
             root (str, optional): path to dataset root. Defaults to './data/philharmonia'.
-            classes (tuple, optional) which classes to include. not working for now. 
+            classes (tuple, optional) which classes to include.
             download (bool, optional): whether to download the dataset. Defaults to True.
             sample_rate (int, optional): sample rate for loading audio. Defaults to 48000.
         """

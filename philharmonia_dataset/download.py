@@ -5,6 +5,7 @@ https://philharmonia.co.uk/resources/sound-samples/
 import urllib.request
 import zipfile, re, os
 import pandas as pd
+import glob
 import logging
 from pathlib import Path
 import audio_utils as au
@@ -12,6 +13,9 @@ from tqdm import tqdm
 import sox
 import warnings
 warnings.simplefilter("ignore")
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def extract_nested_zip(zippedFile, toFolder):
     """ Extract a zip file including any nested zip files
@@ -35,41 +39,34 @@ def generate_dataframe(root_dir):
     generate a dictionary for metadata from our dataset
     """
     data = []
-    for root, dirs, files in os.walk(root_dir):
-        for d in dirs:
-            generate_dataframe(os.path.join(root, d))
-        # we just want mp3s
 
-        pbar = tqdm(files)
-        for f in pbar:
-            ## two problematic files that have failed to load in the past
-            pbar.set_description(f)
-            if f == 'viola_D6_05_piano_arco-normal.mp3' or \
-                f == 'saxophone_Fs3_15_fortissimo_normal.mp3' or\
-                   f == "guitar_Gs4_very-long_forte_normal.mp3" or\
-                       f == "bass-clarinet_Gs3_025_piano_normal.mp3":
-                os.remove(os.path.join(root, f))
-                continue
-            if f[-4:]  == '.mp3':
-                fsplit = f.split('_')
-                mp3_path = Path(root) / f
-                # wav_path = str(mp3_path).replace('.mp3', '.wav')
-                # tfm = sox.Transformer()
-                # tfm.set_output_format(file_type='wav', rate=48000)
-                # tfm.build_file(input_filepath=mp3_path, output_filepath=wav_path)
-                # audio = au.io.load_audio_file(str(mp3_path), 48000)
-                # au.io.write_audio_file(audio, wav_path, 48000, 'wav')
-                # os.remove(mp3_path)
-                metadata = {
-                    'instrument': fsplit[0],
-                    'pitch': fsplit[1], 
-                    'parent': root.split('/')[-1],
-                    'filename': f, #f.replace('.mp3', '.wav'),
-                    'note_length': fsplit[2], 
-                    'dynamic': fsplit[3], 
-                    'articulation': fsplit[4]
-                }
-                data.append(metadata)
+    root = Path(root_dir)
+    
+    mp3s = glob.glob(f'{root}/**/*.mp3', recursive=True)
+
+    pbar = tqdm(mp3s)
+    for path in pbar:
+        path = Path(path)
+        filename = path.name
+        pbar.set_description(filename)
+        if 'viola_D6_05_piano_arco-normal.mp3' in filename or \
+            'saxophone_Fs3_15_fortissimo_normal.mp3'  in filename or \
+            "guitar_Gs4_very-long_forte_normal.mp3" in filename  or \
+            "bass-clarinet_Gs3_025_piano_normal.mp3" in filename:
+            os.remove(path)
+            continue
+        if path.suffix  == '.mp3':
+            fsplit = filename.split('_')
+            metadata = {
+                'instrument': fsplit[0],
+                'pitch': fsplit[1], 
+                'path_relative_to_root': path.parent.relative_to(root_dir),
+                'filename': filename, 
+                'note_length': fsplit[2], 
+                'dynamic': fsplit[3], 
+                'articulation': fsplit[4]
+            }
+            data.append(metadata)
     return pd.DataFrame(data)
 
 def download_dataset(save_path = "./data/philharmonia"):

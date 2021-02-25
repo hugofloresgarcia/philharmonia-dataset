@@ -8,54 +8,37 @@ Author-email: hugofloresgarcia@u.northwestern.edu
 License: MIT
 Description: # philharmonia-dataset
         
-        This is a PyTorch Dataset class implementation for 14,000 sound samples of the Philharmonia Orchestra, retrieved from their [website](https://philharmonia.co.uk/resources/sound-samples/)
+        This is a PyTorch Dataset implementation for 14,000 sound samples of the Philharmonia Orchestra, retrieved from their [website](https://philharmonia.co.uk/resources/sound-samples/)
         
         usage (Python 3):
-        ```
-        from philharmonia_dataset import PhilharmoniaSet,\
-         train_test_split, debatch, download_dataset
-        
-        # first, download the dataset 
-        save_path = './data/philharmonia'
-        
-        # if the dataset is already downloaded, running this line will raise a warning
-        # download_dataset(save_path)
+        ```python
+        from philharmonia_dataset import PhilharmoniaSet
         
         # create a dataset object
-        dataset = PhilharmoniaSet(
-        			dataset_path=save_path, 
-        			classes=None, # imports all classes in dataset 
-        			load_audio=False
+        dataset = PhilharmoniaDataset(
+        			root='./data/philharmonia', 
+        			classes='no-percussion', # dont load a bunch of percussion instruments 
+        			download=True, 
+              sample_rate=SAMPLE_RATE,
         )
+        ```
         
-        # split into train and test
-        trainloader, testloader = train_test_split(
-        					dataset,
-        					batch_size=3, 
-        					val_split=0.2, 
-        					shuffle=True, 
-        					random_seed=0
-        )
+        sample output
+        ```python
+        dataset[0]
         
-        
-        # view the data
-        for data in trainloader:
-            print(data)
-            break
-        
-            # data will be a dictionary with keys:
-            # 'filename': list(str) filename of audio file
-            # 'instrument': list(str) instrument name 
-            # 'pitch': list(str) pitch being played by instrument
-            # 'label': torch.tensor(int) integer encoded class
-            # 'path_to_audio': list(str) relative path to audio file
-        
-            
-            # if load_audio is set to true in the dataset object, 
-            # the following keys will be available as well
-            # 'audio': list(torch.Tensor) audio file with shape (channels, time)
-            # 'sr': list(int)
-        		
+        {
+         'articulation': 'arco-normal.mp3',
+         'audio': array([[-1.6468803e-06, -2.8569633e-05, -7.0609335e-06, ...,
+                 -1.5821372e-06,  7.5128804e-07,  0.0000000e+00]], dtype=float32), # array with shape (channels, samples)
+         'dynamic': 'piano',
+         'filename': 'violin_A6_1_piano_arco-normal.mp3',
+         'instrument': 'violin',
+         'label': 18,
+         'note_length': '1',
+         'one_hot': array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]),
+         'parent': 'violin',
+         'pitch': 'A6'}
         ```
 Keywords: Audio,Dataset,PyTorch
 Platform: UNKNOWN

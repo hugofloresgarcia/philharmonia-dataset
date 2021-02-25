@@ -60,8 +60,6 @@ class PhilharmoniaDataset(Dataset):
         self.records = pd.read_csv(self.root / 'all-samples' / 'metadata.csv').to_dict('records')
 
         # remove all the classes not specified, unless it was left as None
-        #TODO: fix me
-        classes = 'no-percussion'
         if classes == 'no-percussion':
             self.classes = list("saxophone,flute,guitar,contrabassoon,bass-clarinet,"\
                                 "trombone,cello,oboe,bassoon,banjo,mandolin,tuba,viola,"\
@@ -79,7 +77,7 @@ class PhilharmoniaDataset(Dataset):
         random.shuffle(self.records)
 
     def _retrieve_entry(self, entry):
-        path_to_audio = self.root / 'all-samples' / entry['parent'] / entry['filename']
+        path_to_audio = self.root / 'all-samples' / entry['path_relative_to_root'] / entry['filename']
         assert os.path.exists(path_to_audio), f"couldn't find {path_to_audio}"
 
         instrument = entry['instrument']
@@ -131,3 +129,11 @@ class PhilharmoniaDataset(Dataset):
 
         entry = subset[idx]
         return self.retrieve_entry(entry)
+
+
+if __name__ == '__main__':
+    dataset = PhilharmoniaDataset('./data/philharmonia', classes=['agogo-bells'], 
+                                  download=True, sample_rate=32000, seed=0)
+    print(dataset.classes)
+    for i in range(len(dataset)):
+        print(dataset[i])

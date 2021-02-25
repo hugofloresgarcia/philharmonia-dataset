@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Tuple
 
 import torch
 import pandas as pd
@@ -26,7 +27,7 @@ def debatch(data):
 class PhilharmoniaDataset(Dataset):
     def __init__(self, 
                  root: str = './data/philharmonia', 
-                 classes: tuple = None,
+                 classes: Tuple[str] = None,
                  download: bool = True, 
                  sample_rate: int = 48000, 
                  seed: int = 0):
@@ -43,7 +44,7 @@ class PhilharmoniaDataset(Dataset):
 
         Args:
             root (str, optional): path to dataset root. Defaults to './data/philharmonia'.
-            classes (tuple, optional) which classes to include.
+            classes (Tuple[str], optional) which classes to include, i.e. ['banjo', 'guitar'].
             download (bool, optional): whether to download the dataset. Defaults to True.
             sample_rate (int, optional): sample rate for loading audio. Defaults to 48000.
         """

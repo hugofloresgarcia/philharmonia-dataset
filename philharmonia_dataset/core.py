@@ -41,7 +41,7 @@ class PhilharmoniaDataset(Dataset):
             instrument (str): instrument name
             articulation (str): playing articulation (e.g 'pizz-normal') for pizzicato
             dynamic (str): playing dynamic (e.g. 'forte')
-            pitch (str): pitch (e.g. 'B5'). If instrument is unpitched, will return 'nan'. 
+            pitch (str): pitch (e.g. 'Bb5'). If instrument is unpitched, will return 'nan'. 
         }
 
         Args:

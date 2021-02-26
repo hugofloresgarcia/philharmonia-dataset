@@ -38,8 +38,10 @@ class PhilharmoniaDataset(Dataset):
         {
             audio (np.ndarray): audio array with shape (channels, samples)
             onehot (str): one hot encoding of label
-            label (int): index of label in the one hot
             instrument (str): instrument name
+            articulation (str): playing articulation (e.g 'pizz-normal') for pizzicato
+            dynamic (str): playing dynamic (e.g. 'forte')
+            pitch (str): pitch (e.g. 'B5'). If instrument is unpitched, will return 'nan'. 
         }
 
         Args:
@@ -85,7 +87,6 @@ class PhilharmoniaDataset(Dataset):
 
         data = {
             'one_hot': self.get_onehot(instrument),
-            'label': np.argmax(self.get_onehot(instrument)), 
         }
 
         # add all the keys from the entryas well
@@ -95,6 +96,17 @@ class PhilharmoniaDataset(Dataset):
         audio = au.io.load_audio_file(str(path_to_audio), self.sample_rate)
         data['audio'] = audio
 
+        def delete_key(d, key):
+            if key in  d:
+                del d[key]
+
+        delete_key(data, 'Unnamed: 0')
+        delete_key(data, 'note_length')
+        delete_key(data, 'path_relative_to_root')
+        delete_key(data, 'filename')
+        
+        data['articulation'] = data['articulation'].replace('.mp3', '')
+        data['pitch'] = str(data['pitch'])
         return data
 
     def __getitem__(self, index):
@@ -133,8 +145,9 @@ class PhilharmoniaDataset(Dataset):
 
 
 if __name__ == '__main__':
-    dataset = PhilharmoniaDataset('./data/philharmonia', classes=['agogo-bells'], 
+    from pprint import  pprint
+    dataset = PhilharmoniaDataset('./data/philharmonia', ['violin'], 
                                   download=True, sample_rate=32000, seed=0)
     print(dataset.classes)
     for i in range(len(dataset)):
-        print(dataset[i])
+        pprint(dataset[i])

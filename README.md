@@ -16,19 +16,15 @@ dataset = PhilharmoniaDataset(
 ```
 
 sample output
-```python
+```
 dataset[0]
 
 {
- 'articulation': 'arco-normal.mp3',
- 'audio': array([[-1.6468803e-06, -2.8569633e-05, -7.0609335e-06, ...,
-         -1.5821372e-06,  7.5128804e-07,  0.0000000e+00]], dtype=float32), # array with shape (channels, samples)
- 'dynamic': 'piano',
- 'filename': 'violin_A6_1_piano_arco-normal.mp3',
- 'instrument': 'violin',
- 'label': 18,
- 'note_length': '1',
- 'one_hot': array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]),
- 'parent': 'violin',
- 'pitch': 'A6'}
+	audio (np.ndarray): audio array with shape (channels, samples)
+	onehot (str): one hot encoding of label
+	instrument (str): instrument name
+	articulation (str): playing articulation (e.g 'pizz-normal') for pizzicato
+	dynamic (str): playing dynamic (e.g. 'forte')
+	pitch (str): pitch (e.g. 'B5'). If instrument is unpitched, will return 'nan'. 
+}
 ```

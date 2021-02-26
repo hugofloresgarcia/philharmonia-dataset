@@ -21,7 +21,7 @@ dataset[0]
 
 {
 	audio (np.ndarray): audio array with shape (channels, samples)
-	onehot (str): one hot encoding of label
+	one_hot (str): one hot encoding of label
 	instrument (str): instrument name
 	articulation (str): playing articulation (e.g 'pizz-normal') for pizzicato
 	dynamic (str): playing dynamic (e.g. 'forte')

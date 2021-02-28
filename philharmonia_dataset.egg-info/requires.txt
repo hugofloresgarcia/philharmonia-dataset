@@ -1,5 +1,0 @@
-pandas
-torch
-numpy
-audio_utils@ git+https://github.com/hugofloresgarcia/audio-utilstqdm
-sox@ git+https://github.com/rabitt/pysox.git

@@ -8,8 +8,8 @@ from philharmonia_dataset import PhilharmoniaSet
 
 # create a dataset object
 dataset = PhilharmoniaDataset(root='./data/philharmonia', 
-							 download=True, 
-							 sample_rate=48000,)
+                              download=True, 
+                              sample_rate=48000,)
 ```
 
 sample output

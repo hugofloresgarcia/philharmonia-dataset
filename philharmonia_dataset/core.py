@@ -26,8 +26,7 @@ def debatch(data):
 
 class PhilharmoniaDataset(Dataset):
     def __init__(self, 
-                 root: str = './data/philharmonia', 
-                 classes: Tuple[str] = None,
+                 root: str = './data/philharmonia',
                  download: bool = True, 
                  sample_rate: int = 48000, 
                  seed: int = 0):
@@ -37,7 +36,7 @@ class PhilharmoniaDataset(Dataset):
         indexing returns a dictionary with format:
         {
             audio (np.ndarray): audio array with shape (channels, samples)
-            one_hot (str): one hot encoding of label
+            one_hot (np.ndarray): one hot encoding of label
             instrument (str): instrument name
             articulation (str): playing articulation (e.g 'pizz-normal') for pizzicato
             dynamic (str): playing dynamic (e.g. 'forte')
@@ -63,6 +62,8 @@ class PhilharmoniaDataset(Dataset):
         self.records = pd.read_csv(self.root / 'all-samples' / 'metadata.csv').to_dict('records')
 
         # remove all the classes not specified, unless it was left as None
+        # this branch uses a fixed classlist, so let's just set this to no-percussion
+        classes = 'no-percussion'
         if classes == 'no-percussion':
             self.classes = list("saxophone,flute,guitar,contrabassoon,bass-clarinet,"\
                                 "trombone,cello,oboe,bassoon,banjo,mandolin,tuba,viola,"\
@@ -86,7 +87,7 @@ class PhilharmoniaDataset(Dataset):
         instrument = entry['instrument']
 
         data = {
-            'one_hot': self.get_onehot(instrument),
+            'one_hot': self.get_one_hot(instrument),
         }
 
         # add all the keys from the entryas well
@@ -127,9 +128,17 @@ class PhilharmoniaDataset(Dataset):
     def __len__(self):
         return len(self.records)
 
-    def get_onehot(self, label):
+    def get_one_hot(self, label):
         assert label in self.classes, "couldn't find label in class list"
         return np.array([1 if label == l else 0 for l in self.classes])
+
+    def _print_one_hot_table(self):
+        """ prints a markdown table with indices and classnames"""
+        out =  f'| Index | Label |\n'
+        out += f'|-------|-------|\n'
+        for idx, name in enumerate(self.classes):
+            out += f'|{idx}|{name}|\n'
+        print(out)
 
     def get_example(self, class_name):
         """
@@ -141,13 +150,12 @@ class PhilharmoniaDataset(Dataset):
         idx = torch.randint(0, high=len(subset), size=(1,)).item()
 
         entry = subset[idx]
-        return self.retrieve_entry(entry)
+        return self._retrieve_entry(entry)
 
 
 if __name__ == '__main__':
     from pprint import  pprint
-    dataset = PhilharmoniaDataset('./data/philharmonia', ['violin'], 
+    dataset = PhilharmoniaDataset('./data/philharmonia',
                                   download=True, sample_rate=32000, seed=0)
-    print(dataset.classes)
-    for i in range(len(dataset)):
-        pprint(dataset[i])
+    dataset._print_one_hot_table()
+    print(dataset.get_example('clarinet'))

@@ -23,17 +23,23 @@ def _validate_dataset_entry(item, dataset):
     assert isinstance(item['dynamic'], str)
 
 def test_dataset(root_dir):
-    datasets = []
-    for classes in (None, 'no-percussion', ['violin', 'cello']):
-        datasets.append(PhilharmoniaDataset(
-            root=root_dir,
-            classes=classes, 
-            download=True, 
-            sample_rate=48000, 
-            seed=0))
+    dataset = PhilharmoniaDataset(
+        root=root_dir,
+        download=True, 
+        sample_rate=48000, 
+        seed=0)
     
-    dataset = datasets[0]
     for idx in range(len(dataset)):
         item = dataset[idx]
-
         _validate_dataset_entry(item, dataset)
+
+def test_dataset_onehots(root_dir):
+    dataset = PhilharmoniaDataset(root=root_dir,
+        download=True, 
+        sample_rate=48000, 
+        seed=0)
+
+    for name in dataset.classes:
+        example = dataset.get_example(name)
+        assert int(np.argmax(example['one_hot'])) == dataset.classes.index(name)
+        assert name == example['instrument']

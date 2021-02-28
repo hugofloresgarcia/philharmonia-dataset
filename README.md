@@ -7,11 +7,9 @@ This is a PyTorch Dataset implementation for 14,000 sound samples of the Philhar
 from philharmonia_dataset import PhilharmoniaSet
 
 # create a dataset object
-dataset = PhilharmoniaDataset(
-	root='./data/philharmonia', 
-	download=True, 
-    sample_rate=48000,
-)
+dataset = PhilharmoniaDataset(root='./data/philharmonia', 
+							 download=True, 
+							 sample_rate=48000,)
 ```
 
 sample output

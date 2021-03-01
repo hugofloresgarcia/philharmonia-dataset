@@ -36,7 +36,8 @@ def extract_nested_zip(zippedFile, toFolder):
                 filename = filename[0:-4]
                 extract_nested_zip(fileSpec, os.path.join(root, filename))
 
-def create_entry(path, root_dir):
+def create_entry(args):
+    path, root_dir = args
     path = Path(path)
     filename = path.name
     if 'viola_D6_05_piano_arco-normal.mp3' in filename or \
@@ -81,7 +82,14 @@ def generate_dataframe(root_dir):
     mp3s = glob.glob(f'{root}/**/*.mp3', recursive=True)
     roots = [root_dir for r in mp3s]
 
-    data = process_map(create_entry, mp3s, roots)
+    args = [(mp3, r) for mp3, r in zip(mp3s, roots)]
+
+    from multiprocessing import Pool
+
+    pool = Pool()
+    data = pool.map(create_entry, args)
+
+    # data = process_map(create_entry, mp3s, roots)
     data = [d for d in data if isinstance(d, dict)]
     return pd.DataFrame(data)
 

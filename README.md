@@ -17,8 +17,8 @@ from philharmonia_dataset import PhilharmoniaSet
 
 # create a dataset object
 dataset = PhilharmoniaDataset(root='./data/philharmonia', 
-                              download=True, 
-                              sample_rate=48000,)
+							 download=True, 
+							 sample_rate=48000,)
 ```
 
 During the first run, calling `PhilharmoniaDataset` will download the audio files from [here](https://philharmonia.co.uk/resources/sound-samples/) and convert `mp3` files to `wav`, for faster loading. This will take approximately 5-10 minutes. 

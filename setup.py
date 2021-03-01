@@ -26,7 +26,7 @@ install_requires = [
     'tqdm', 
     'sox @ git+https://github.com/rabitt/pysox.git', 
     'pydub', 
-    'tqdm==4.57'
+    'tqdm'
 ]
 
 if __name__ == '__main__':

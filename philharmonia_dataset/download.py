@@ -39,6 +39,7 @@ def create_entry(args):
     path, root_dir = args
     path = Path(path)
     filename = path.name
+    logging.info(f'processing: {filename}')
     if 'viola_D6_05_piano_arco-normal.mp3' in filename or \
         'saxophone_Fs3_15_fortissimo_normal.mp3'  in filename or \
         "guitar_Gs4_very-long_forte_normal.mp3" in filename  or \

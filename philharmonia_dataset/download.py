@@ -115,7 +115,7 @@ def download_dataset(save_path = "./data/philharmonia"):
     # extract everything recursively
     extract_nested_zip(f'{save_path}.zip', save_path)
     
-    logging.info('generating dataframe...')
+    logging.info('generating dataframe... (this will take around 5-7 min)')
     df_path = os.path.join(save_path, 'all-samples', 'metadata.csv')
     metadata = generate_dataframe(os.path.join(save_path, 'all-samples'))
     metadata.to_csv(df_path)

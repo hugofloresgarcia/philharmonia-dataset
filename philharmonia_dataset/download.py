@@ -5,11 +5,13 @@ https://philharmonia.co.uk/resources/sound-samples/
 import urllib.request
 import zipfile, re, os
 import pandas as pd
+import pydub
 import glob
 import logging
 from pathlib import Path
 import audio_utils as au
 from tqdm import tqdm
+from tqdm.contrib.concurrent import process_map
 import sox
 import warnings
 warnings.simplefilter("ignore")
@@ -33,40 +35,54 @@ def extract_nested_zip(zippedFile, toFolder):
                 logging.info(f'extracting: {fileSpec}')
                 filename = filename[0:-4]
                 extract_nested_zip(fileSpec, os.path.join(root, filename))
+
+def create_entry(path, root_dir):
+    path = Path(path)
+    filename = path.name
+    if 'viola_D6_05_piano_arco-normal.mp3' in filename or \
+        'saxophone_Fs3_15_fortissimo_normal.mp3'  in filename or \
+        "guitar_Gs4_very-long_forte_normal.mp3" in filename  or \
+        "bass-clarinet_Gs3_025_piano_normal.mp3" in filename:
+        os.remove(path)
+        return
+    if path.suffix  == '.mp3':
+        # convert mp3 to wav
+        src = path
+        dst = path.with_suffix('.wav')
+
+        # convert wav to mp3
+        sound = pydub.AudioSegment.from_mp3(src)
+        sound.export(dst, format='wav')
+
+        os.remove(src)
+
+        path = dst
+        filename = path.name
+
+        fsplit = filename.split('_')
+        
+        metadata = {
+            'instrument': fsplit[0],
+            'pitch': fsplit[1], 
+            'path_relative_to_root': path.parent.relative_to(root_dir),
+            'filename': filename, 
+            'note_length': fsplit[2], 
+            'dynamic': fsplit[3], 
+            'articulation': fsplit[4]
+        }
+    return metadata
                 
 def generate_dataframe(root_dir):
     """
     generate a dictionary for metadata from our dataset
     """
     data = []
-
     root = Path(root_dir)
-    
     mp3s = glob.glob(f'{root}/**/*.mp3', recursive=True)
+    roots = [root_dir for r in mp3s]
 
-    pbar = tqdm(mp3s)
-    for path in pbar:
-        path = Path(path)
-        filename = path.name
-        pbar.set_description(filename)
-        if 'viola_D6_05_piano_arco-normal.mp3' in filename or \
-            'saxophone_Fs3_15_fortissimo_normal.mp3'  in filename or \
-            "guitar_Gs4_very-long_forte_normal.mp3" in filename  or \
-            "bass-clarinet_Gs3_025_piano_normal.mp3" in filename:
-            os.remove(path)
-            continue
-        if path.suffix  == '.mp3':
-            fsplit = filename.split('_')
-            metadata = {
-                'instrument': fsplit[0],
-                'pitch': fsplit[1], 
-                'path_relative_to_root': path.parent.relative_to(root_dir),
-                'filename': filename, 
-                'note_length': fsplit[2], 
-                'dynamic': fsplit[3], 
-                'articulation': fsplit[4]
-            }
-            data.append(metadata)
+    data = process_map(create_entry, mp3s, roots)
+    data = [d for d in data if isinstance(d, dict)]
     return pd.DataFrame(data)
 
 def download_dataset(save_path = "./data/philharmonia"):

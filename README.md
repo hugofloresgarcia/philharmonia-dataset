@@ -2,6 +2,15 @@
 
 This is a PyTorch Dataset implementation for 14,000 sound samples of the Philharmonia Orchestra, retrieved from their [website](https://philharmonia.co.uk/resources/sound-samples/)
 
+## Installing
+
+Clone the repo and install using pip (and install ffmpeg)
+```bash
+apt-get install ffmpeg
+git clone https://github.com/hugofloresgarcia/philharmonia-dataset
+cd philharmonia-dataset && pip install -e .
+```
+
 ## Usage (Python 3):
 ```python
 from philharmonia_dataset import PhilharmoniaSet
@@ -11,6 +20,8 @@ dataset = PhilharmoniaDataset(root='./data/philharmonia',
                               download=True, 
                               sample_rate=48000,)
 ```
+
+During the first run, calling `PhilharmoniaDataset` will download the audio files from [here](https://philharmonia.co.uk/resources/sound-samples/) and convert `mp3` files to `wav`, for faster loading. This will take approximately 5-10 minutes. 
 
 sample output
 ```

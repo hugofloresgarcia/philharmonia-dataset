@@ -29,7 +29,7 @@ def test_dataset(root_dir):
         sample_rate=48000, 
         seed=0)
     
-    for idx in range(len(dataset)):
+    for idx in range(0, len(dataset), 2):
         item = dataset[idx]
         _validate_dataset_entry(item, dataset)
 

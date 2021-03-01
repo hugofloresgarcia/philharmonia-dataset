@@ -24,7 +24,8 @@ install_requires = [
     'numpy',
     'audio_utils @ git+https://github.com/hugofloresgarcia/audio-utils'
     'tqdm', 
-    'sox @ git+https://github.com/rabitt/pysox.git'
+    'sox @ git+https://github.com/rabitt/pysox.git', 
+    'pydub'
 ]
 
 if __name__ == '__main__':

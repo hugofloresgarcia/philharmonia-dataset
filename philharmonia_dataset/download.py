@@ -11,7 +11,6 @@ import logging
 from pathlib import Path
 import audio_utils as au
 from tqdm import tqdm
-from tqdm.contrib.concurrent import process_map
 import sox
 import warnings
 warnings.simplefilter("ignore")

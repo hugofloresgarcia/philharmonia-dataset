@@ -84,9 +84,9 @@ def generate_dataframe(root_dir):
 
     args = [(mp3, r) for mp3, r in zip(mp3s, roots)]
 
-    from multiprocessing import Pool
+    from multiprocessing.pool import ThreadPool
 
-    pool = Pool()
+    pool = ThreadPool()
     data = pool.map(create_entry, args)
 
     # data = process_map(create_entry, mp3s, roots)

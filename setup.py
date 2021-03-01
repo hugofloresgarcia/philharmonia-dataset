@@ -25,7 +25,8 @@ install_requires = [
     'audio_utils @ git+https://github.com/hugofloresgarcia/audio-utils'
     'tqdm', 
     'sox @ git+https://github.com/rabitt/pysox.git', 
-    'pydub'
+    'pydub', 
+    'tqdm==4.57'
 ]
 
 if __name__ == '__main__':

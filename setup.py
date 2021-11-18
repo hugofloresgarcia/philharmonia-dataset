@@ -22,7 +22,7 @@ install_requires = [
     'pandas', 
     'torch==1.7.1', 
     'numpy',
-    'audio_utils @ git+https://github.com/hugofloresgarcia/audio-utils'
+    'audio_utils @ git+https://github.com/hugofloresgarcia/audio-utils',
     'tqdm', 
     'sox @ git+https://github.com/rabitt/pysox.git', 
     'pydub', 

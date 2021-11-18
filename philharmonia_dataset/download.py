@@ -10,8 +10,7 @@ import glob
 import logging
 from pathlib import Path
 import audio_utils as au
-from tqdm import tqdm
-import sox
+import librosa
 import warnings
 warnings.simplefilter("ignore")
 
@@ -52,8 +51,9 @@ def create_entry(args):
         dst = path.with_suffix('.wav')
 
         # convert wav to mp3
-        sound = pydub.AudioSegment.from_mp3(src)
-        sound.export(dst, format='wav')
+        sr = librosa.core.get_samplerate(src)
+        sound = au.io.load_audio_file(src, sr)
+        au.io.write_audio_file(sound, dst, sr, 'wav', exist_ok=True)
 
         os.remove(src)
 

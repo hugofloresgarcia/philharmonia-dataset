@@ -20,7 +20,7 @@ setup_args = dict(
 
 install_requires = [
     'pandas', 
-    'torch==1.7.1', 
+    'torch', 
     'numpy',
     'audio_utils @ git+https://github.com/hugofloresgarcia/audio-utils',
     'tqdm', 

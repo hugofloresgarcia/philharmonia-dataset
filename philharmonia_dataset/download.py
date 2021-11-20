@@ -48,14 +48,15 @@ def create_entry(args):
     if path.suffix  == '.mp3':
         # convert mp3 to wav
         src = path
-        dst = path.with_suffix('.wav')
+        # dst = path.with_suffix('.wav')
+        dst = src
 
         # convert wav to mp3
-        sr = librosa.core.get_samplerate(src)
-        sound = au.io.load_audio_file(src, sr)
-        au.io.write_audio_file(sound, dst, sr, 'wav', exist_ok=True)
+        # sr = librosa.core.get_samplerate(src)
+        # sound = au.io.load_audio_file(src, sr)
+        # au.io.write_audio_file(sound, dst, sr, 'wav', exist_ok=True)
 
-        os.remove(src)
+        # os.remove(src)
 
         path = dst
         filename = path.name

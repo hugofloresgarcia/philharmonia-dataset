@@ -29,6 +29,7 @@ class PhilharmoniaDataset(Dataset):
                  root: str = './data/philharmonia',
                  download: bool = True, 
                  sample_rate: int = 48000, 
+                 classes: str = 'no-percussion',
                  seed: int = 0):
         r"""creates a PyTorch Dataset object for the Philharmonia Orchestra samples.
         https://philharmonia.co.uk/resources/sound-samples/
@@ -61,14 +62,18 @@ class PhilharmoniaDataset(Dataset):
         # generate a list of dicts from our dataframe
         self.records = pd.read_csv(self.root / 'all-samples' / 'metadata.csv').to_dict('records')
 
-        # remove all the classes not specified, unless it was left as None
-        # this branch uses a fixed classlist, so let's just set this to no-percussion
-        classes = 'no-percussion'
-        if classes == 'no-percussion':
-            self.classes = list("saxophone,flute,guitar,contrabassoon,bass-clarinet,"\
+        non_percussion_classes = list("saxophone,flute,guitar,contrabassoon,bass-clarinet,"\
                                 "trombone,cello,oboe,bassoon,banjo,mandolin,tuba,viola,"\
                                 "french-horn,english-horn,violin,double-bass,trumpet,clarinet".split(','))
+        # remove all the classes not specified, unless it was left as None
+        # this branch uses a fixed classlist, so let's just set this to no-percussion
+        if classes == 'no-percussion':
+            self.classes = non_percussion_classes
             self.records = [e for e in self.records if e['instrument'] in self.classes]
+        elif classes == 'percussion':
+            self.classes = list(set([e['instrument'] for e in self.records]))
+            self.classes = [c for c in self.classes if c not in non_percussion_classes]
+            self.records = [e for e in self.records if e['instrument'] in classes]
         elif classes is not None: 
             self.records = [e for e in self.records if e['instrument'] in classes]
             self.classes = list(set([e['instrument'] for e in self.records]))
@@ -155,7 +160,9 @@ class PhilharmoniaDataset(Dataset):
 
 if __name__ == '__main__':
     from pprint import  pprint
-    dataset = PhilharmoniaDataset('./data/philharmonia',
+    dataset = PhilharmoniaDataset('./data/philharmonia', classes='percussion',
                                   download=True, sample_rate=32000, seed=0)
-    dataset._print_one_hot_table()
-    print(dataset.get_example('clarinet'))
+    print(dataset.classes)
+    # breakpoint()
+    # dataset._print_one_hot_table()
+    # print(dataset.get_example('clarinet'))

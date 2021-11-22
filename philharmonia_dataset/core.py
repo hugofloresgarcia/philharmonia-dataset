@@ -73,7 +73,7 @@ class PhilharmoniaDataset(Dataset):
         elif classes == 'percussion':
             self.classes = list(set([e['instrument'] for e in self.records]))
             self.classes = [c for c in self.classes if c not in non_percussion_classes]
-            self.records = [e for e in self.records if e['instrument'] in classes]
+            self.records = [e for e in self.records if e['instrument'] in self.classes]
         elif classes is not None: 
             self.records = [e for e in self.records if e['instrument'] in classes]
             self.classes = list(set([e['instrument'] for e in self.records]))
@@ -93,6 +93,7 @@ class PhilharmoniaDataset(Dataset):
 
         data = {
             'one_hot': self.get_one_hot(instrument),
+            'audio_path': path_to_audio
         }
 
         # add all the keys from the entryas well
